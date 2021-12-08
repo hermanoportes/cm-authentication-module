@@ -1,4 +1,4 @@
-package pt.hermanoportes.cmauthenticationmodule;
+package pt.hermanoportes.cartoonmania.authenticationmodule;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
