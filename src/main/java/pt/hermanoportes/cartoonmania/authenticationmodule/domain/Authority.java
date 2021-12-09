@@ -20,10 +20,6 @@ public class Authority implements GrantedAuthority {
     private Long id;
     private String name;
 
-    public Authority(String name) {
-        this.name = name;
-    }
-
     @Override
     public String getAuthority() {
         return this.name;

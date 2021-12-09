@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pt.hermanoportes.cartoonmania.authenticationmodule.repository.ApplicationUserRepository;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Log4j2

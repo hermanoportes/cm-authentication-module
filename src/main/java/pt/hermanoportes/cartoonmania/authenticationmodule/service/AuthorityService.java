@@ -19,7 +19,7 @@ public class AuthorityService {
 
     private final AuthorityRepository authorityRepository;
     private final ApplicationUserRepository userRepository;
-    private Set<Authority> authorities = new HashSet<>();
+    private final Set<Authority> authorities = new HashSet<>();
 
     public void grantAuthorities(String username, String authority) {
         ApplicationUser user = userRepository.findByUsername(username)
