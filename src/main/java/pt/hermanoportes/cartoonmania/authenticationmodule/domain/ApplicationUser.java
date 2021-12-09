@@ -6,20 +6,21 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Getter @Setter
 @Entity
 public class ApplicationUser implements UserDetails {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+
     private String username;
     private String password;
 
-    @ManyToMany
-    private List<Authority> authorities = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private Set<Authority> authorities = new HashSet<>();
 
 
     @Override
