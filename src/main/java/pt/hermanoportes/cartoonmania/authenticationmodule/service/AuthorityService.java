@@ -22,7 +22,7 @@ public class AuthorityService {
     private Set<Authority> authorities = new HashSet<>();
 
     public void grantAuthorities(String username, String authority) {
-        ApplicationUser user = Optional.ofNullable(userRepository.findByUsername(username))
+        ApplicationUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found: '" + username + "'"));
 
         Authority byName = authorityRepository.findByName(authority).orElseThrow(
