@@ -13,8 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import pt.hermanoportes.cartoonmania.authenticationmodule.service.ApplicationUserDetailsService;
+import pt.hermanoportes.cartoonmania.authenticationmodule.service.ApplicationUserService;
+import pt.hermanoportes.cartoonmania.authenticationmodule.service.TokenService;
 
 @EnableWebSecurity
 @Configuration
@@ -22,7 +25,9 @@ import pt.hermanoportes.cartoonmania.authenticationmodule.service.ApplicationUse
 @Log4j2
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final ApplicationUserDetailsService applicationUserDetailsService;
+    private final ApplicationUserDetailsService userDetailsService;
+    private final ApplicationUserService userService;
+    private final TokenService tokenService;
 
     @Override
     @Bean
@@ -33,11 +38,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/api/auth").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(new TokenAuthenticationFilter(tokenService, userService),
+                        UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -45,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         log.info("Password encoded: {}", passwordEncoder.encode("123456"));
 
-        auth.userDetailsService(applicationUserDetailsService)
+        auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder);
     }
 }

@@ -13,7 +13,7 @@ import pt.hermanoportes.cartoonmania.authenticationmodule.service.TokenService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @Log4j2
 public class AuthenticationController {
@@ -21,7 +21,7 @@ public class AuthenticationController {
     private final AuthenticationManager authManager;
     private final TokenService tokenService;
 
-    @PostMapping()
+    @PostMapping("/auth")
     public ResponseEntity<TokenDto> login(@RequestBody @Valid LoginForm loginForm) {
         try {
             Authentication authentication = authManager.authenticate(loginForm.toUsernamePasswordAuthenticationToken());

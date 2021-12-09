@@ -1,5 +1,6 @@
 package pt.hermanoportes.cartoonmania.authenticationmodule.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
@@ -34,5 +35,23 @@ public class TokenService {
                 .setExpiration(Date.from(expiration.atZone(ZoneId.systemDefault()).toInstant()))
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Long getUserId(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(this.secret)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return Long.valueOf(claims.getSubject());
     }
 }
