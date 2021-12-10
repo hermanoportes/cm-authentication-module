@@ -2,20 +2,22 @@ package pt.hermanoportes.cartoonmania.authenticationmodule.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 public class ApplicationUser implements UserDetails {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
+    private String email;
     private String username;
     private String password;
 
@@ -24,7 +26,7 @@ public class ApplicationUser implements UserDetails {
 
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
